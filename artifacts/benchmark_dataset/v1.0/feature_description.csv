@@ -1,0 +1,18 @@
+feature_name,category,description
+wind_speed,meteorology,Horizontal wind speed (m/s)
+wind_u,meteorology,Zonal wind component eastward (m/s)
+wind_v,meteorology,Meridional wind component northward (m/s)
+temperature,meteorology,Ambient surface temperature (K)
+relative_humidity,meteorology,Relative humidity fraction (0 to 1)
+surface_pressure,meteorology,Atmospheric surface pressure (Pa)
+pblh,meteorology,Planetary boundary layer height (m)
+stability_class,stability,Pasquill-Gifford atmospheric stability class (A-F)
+hour,temporal,Hour of the day (0-23)
+day_of_week,temporal,"Day of the week (0=Monday, 6=Sunday)"
+month,temporal,Month of the year (1-12)
+sin_hour,temporal,Sine component of circular 24-hour diurnal cycle
+cos_hour,temporal,Cosine component of circular 24-hour diurnal cycle
+wind_speed_mean_3h,rolling_weather,Causal right-aligned 3-hour rolling mean of wind speed (m/s)
+temperature_mean_6h,rolling_weather,Causal right-aligned 6-hour rolling mean of temperature (K)
+road_density_total,geography,Proxy road network density in local receptor buffer
+source_density,geography,Proxy emission source density in local buffer

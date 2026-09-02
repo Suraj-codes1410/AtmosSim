@@ -1,0 +1,23 @@
+{
+  "dataset_name": "AtmosSim Benchmark Dataset",
+  "dataset_version": "v1.0",
+  "feature_version": "v1.0",
+  "creation_date": "2026-09-02T17:07:06.352537+00:00",
+  "generator_version": "AtmosSim dataset generator v1.0",
+  "canonical_simulator": "GaussianPlumeModel",
+  "canonical_simulator_version": "unknown",
+  "random_seed": 42,
+  "sample_counts": {
+    "train": 1728,
+    "validation": 324,
+    "test": 432,
+    "cross_location_test": 2484
+  },
+  "feature_count": 17,
+  "configuration_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+  "software_environment": {
+    "python_version": "3.14.4",
+    "platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.43"
+  },
+  "limitations": "Synthetic benchmark; does not guarantee real\u2011world predictive performance."
+}

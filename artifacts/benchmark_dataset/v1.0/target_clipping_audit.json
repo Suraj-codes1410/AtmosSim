@@ -1,0 +1,22 @@
+{
+  "pre_clipping_min": 0.28017037667051975,
+  "pre_clipping_max": 1269.7151349089356,
+  "pre_clipping_mean": 109.91269768509679,
+  "pre_clipping_median": 25.053379664733285,
+  "pre_clipping_std": 221.7565387551823,
+  "pre_clipping_p90": 268.93307249297044,
+  "pre_clipping_p95": 575.542767889014,
+  "pre_clipping_p99": 1167.5995042502987,
+  "pre_clipping_p99_9": 1269.7151349089356,
+  "pre_clipping_negative_count": 0,
+  "pre_clipping_nan_inf_count": 0,
+  "rows_above_500": 312,
+  "pct_rows_above_500": 6.280193236714976,
+  "clipped_rows": 312,
+  "pct_clipped": 6.280193236714976,
+  "post_clipping_min": 0.28017037667051975,
+  "post_clipping_max": 500.0,
+  "post_clipping_mean": 87.35735346858114,
+  "post_clipping_median": 25.053379664733285,
+  "post_clipping_std": 135.4915886907567
+}

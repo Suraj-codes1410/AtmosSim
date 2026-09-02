@@ -1,0 +1,14 @@
+{
+  "feature": {
+    "status": "PASS",
+    "offending_columns": []
+  },
+  "simulator_state": {
+    "status": "PASS",
+    "offending_columns": []
+  },
+  "target": {
+    "status": "PASS",
+    "offending_columns": []
+  }
+}

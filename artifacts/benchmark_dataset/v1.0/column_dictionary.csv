@@ -1,0 +1,23 @@
+column_name,dtype,description
+sample_id,string,Unique alphanumeric identifier for each prediction sample
+timestamp,datetime64[ns],Prediction origin timestamp
+region_id,string,Geographical metropolitan region identifier
+location_id,string,Receptor or station location identifier
+wind_speed,float64,Horizontal wind speed (m/s)
+wind_u,float64,Zonal wind component eastward (m/s)
+wind_v,float64,Meridional wind component northward (m/s)
+temperature,float64,Ambient surface temperature (K)
+relative_humidity,float64,Relative humidity fraction (0 to 1)
+surface_pressure,float64,Atmospheric surface pressure (Pa)
+pblh,float64,Planetary boundary layer height (m)
+stability_class,string,Pasquill-Gifford atmospheric stability class (A-F)
+hour,int8,Hour of the day (0-23)
+day_of_week,int8,"Day of the week (0=Monday, 6=Sunday)"
+month,int8,Month of the year (1-12)
+sin_hour,float64,Sine component of circular 24-hour diurnal cycle
+cos_hour,float64,Cosine component of circular 24-hour diurnal cycle
+wind_speed_mean_3h,float64,Causal right-aligned 3-hour rolling mean of wind speed (m/s)
+temperature_mean_6h,float64,Causal right-aligned 6-hour rolling mean of temperature (K)
+road_density_total,float64,Proxy road network density in local receptor buffer
+source_density,float64,Proxy emission source density in local buffer
+target_pm25,float64,Ground-truth forecasted PM2.5 concentration 1 hour ahead (ug/m3)
