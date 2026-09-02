@@ -1,0 +1,119 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API fixture",
+  "elements": [
+    {
+      "type": "node",
+      "id": 101,
+      "lat": 28.61,
+      "lon": 77.205
+    },
+    {
+      "type": "node",
+      "id": 102,
+      "lat": 28.613,
+      "lon": 77.208
+    },
+    {
+      "type": "node",
+      "id": 103,
+      "lat": 28.616,
+      "lon": 77.211
+    },
+    {
+      "type": "node",
+      "id": 104,
+      "lat": 28.618,
+      "lon": 77.214
+    },
+    {
+      "type": "way",
+      "id": 2001,
+      "nodes": [
+        101,
+        102,
+        103,
+        104
+      ],
+      "tags": {
+        "highway": "primary",
+        "name": "Janpath Arterial Road",
+        "lanes": "4"
+      }
+    },
+    {
+      "type": "node",
+      "id": 201,
+      "lat": 28.612,
+      "lon": 77.215
+    },
+    {
+      "type": "node",
+      "id": 202,
+      "lat": 28.615,
+      "lon": 77.215
+    },
+    {
+      "type": "way",
+      "id": 2002,
+      "nodes": [
+        201,
+        202
+      ],
+      "tags": {
+        "highway": "secondary",
+        "name": "Connaught Link"
+      }
+    },
+    {
+      "type": "node",
+      "id": 301,
+      "lat": 28.62,
+      "lon": 77.2
+    },
+    {
+      "type": "node",
+      "id": 302,
+      "lat": 28.622,
+      "lon": 77.2
+    },
+    {
+      "type": "node",
+      "id": 303,
+      "lat": 28.622,
+      "lon": 77.203
+    },
+    {
+      "type": "node",
+      "id": 304,
+      "lat": 28.62,
+      "lon": 77.203
+    },
+    {
+      "type": "way",
+      "id": 3001,
+      "nodes": [
+        301,
+        302,
+        303,
+        304,
+        301
+      ],
+      "tags": {
+        "landuse": "industrial",
+        "name": "Okhla Industrial Area Subzone"
+      }
+    },
+    {
+      "type": "node",
+      "id": 401,
+      "lat": 28.608,
+      "lon": 77.22,
+      "tags": {
+        "man_made": "chimney",
+        "power": "generator",
+        "name": "Thermal Auxiliary Unit"
+      }
+    }
+  ]
+}

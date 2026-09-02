@@ -1,8 +1,8 @@
 # AtmosSim: Physics-to-ML Atmospheric Dispersion Benchmark
 
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/pytest-155%20passed-brightgreen.svg)]()
-[![Status](https://img.shields.io/badge/Phase%201-Complete-success.svg)]()
+[![Tests](https://img.shields.io/badge/pytest-179%20passed-brightgreen.svg)]()
+[![Status](https://img.shields.io/badge/Phase%202-Complete%20%26%20Frozen-success.svg)]()
 
 AtmosSim is a research-grade, physics-based atmospheric dispersion simulator and machine learning benchmark framework.
 
