@@ -74,7 +74,10 @@ def build_metadata(
             "python_version": platform.python_version(),
             "platform": platform.platform(),
         },
-        "limitations": "Synthetic benchmark; does not guarantee real‑world predictive performance.",
+        "dataset_scope": "Single synthetic day (2020-01-01), 216-scenario factorial parameter sweep over wind speed, stability class, wind direction, and emission rate — not a multi-day or multi-real-location dataset.",
+        "geographic_scope_disclosure": "Regions R001 and R002 share identical synthetic parameter distributions (Delta = 0.000000 across all feature means). The 216 stations represent distinct synthetic parameter combinations, not separate real-world geographical observation sites.",
+        "target_physics_disclosure": "Ground-truth target PM2.5 concentrations are unclipped physical outputs up to 1,269.72 ug/m3 under severe nocturnal inversion conditions.",
+        "limitations": "Synthetic benchmark parameter sweep; does not guarantee real-world predictive accuracy across complex terrain or multi-source urban airsheds.",
     }
     return metadata
 

@@ -103,10 +103,6 @@ def construct_operational_features(sim_df: pd.DataFrame) -> pd.DataFrame:
     df = sim_df.copy()
     if "month" not in df.columns and "timestamp" in df.columns:
         df["month"] = pd.to_datetime(df["timestamp"]).dt.month
-    if "road_density_total" not in df.columns:
-        df["road_density_total"] = 0.0
-    if "source_density" not in df.columns:
-        df["source_density"] = 0.0
 
     df = _wind_components(df)
     df = _circular_time_features(df)

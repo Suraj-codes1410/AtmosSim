@@ -47,9 +47,6 @@ _FEATURE_COLUMNS: List[Tuple[str, str]] = [
     # Rolling weather
     ("wind_speed_mean_3h", "float64"),
     ("temperature_mean_6h", "float64"),
-    # Geographic / road density (example placeholders)
-    ("road_density_total", "float64"),
-    ("source_density", "float64"),
 ]
 
 # Target column – appended after features

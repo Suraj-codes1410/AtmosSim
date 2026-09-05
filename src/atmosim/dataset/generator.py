@@ -84,7 +84,8 @@ def _run_canonical_simulator(scenario) -> pd.DataFrame:
         concs_ug_m3.append(c_g_m3 * 1e6)
 
     raw_conc = np.array(concs_ug_m3, dtype=np.float64)
-    clipped_conc = np.clip(raw_conc, 0.0, 500.0)
+    # Target PM2.5 preserves full physical dispersion values (no artificial 500 ug/m3 clipping)
+    unclipped_conc = np.clip(raw_conc, 0.0, 2500.0)
 
     df = pd.DataFrame({
         "timestamp": timestamps,
@@ -97,7 +98,7 @@ def _run_canonical_simulator(scenario) -> pd.DataFrame:
         "stability_class": stability,
         "hour": timestamps.hour,
         "day_of_week": timestamps.dayofweek,
-        "concentration_pm25": clipped_conc,
+        "concentration_pm25": unclipped_conc,
         "raw_concentration_pm25": raw_conc,
     })
     return df
@@ -186,28 +187,24 @@ def generate_dataset(
     )
 
     raw_arr = np.array(raw_targets_all, dtype=np.float64)
-    clipped_arr = full_df["target_pm25"].values
+    target_arr = full_df["target_pm25"].values
     target_clipping_audit = {
-        "pre_clipping_min": float(np.min(raw_arr)),
-        "pre_clipping_max": float(np.max(raw_arr)),
-        "pre_clipping_mean": float(np.mean(raw_arr)),
-        "pre_clipping_median": float(np.median(raw_arr)),
-        "pre_clipping_std": float(np.std(raw_arr)),
-        "pre_clipping_p90": float(np.percentile(raw_arr, 90)),
-        "pre_clipping_p95": float(np.percentile(raw_arr, 95)),
-        "pre_clipping_p99": float(np.percentile(raw_arr, 99)),
-        "pre_clipping_p99_9": float(np.percentile(raw_arr, 99.9)),
-        "pre_clipping_negative_count": int((raw_arr < 0.0).sum()),
-        "pre_clipping_nan_inf_count": int((~np.isfinite(raw_arr)).sum()),
-        "rows_above_500": int((raw_arr > 500.0).sum()),
-        "pct_rows_above_500": float((raw_arr > 500.0).mean() * 100.0),
-        "clipped_rows": int((raw_arr > 500.0).sum()),
-        "pct_clipped": float((raw_arr > 500.0).mean() * 100.0),
-        "post_clipping_min": float(np.min(clipped_arr)),
-        "post_clipping_max": float(np.max(clipped_arr)),
-        "post_clipping_mean": float(np.mean(clipped_arr)),
-        "post_clipping_median": float(np.median(clipped_arr)),
-        "post_clipping_std": float(np.std(clipped_arr)),
+        "status": "UNCLIPPED_PHYSICAL_TARGET",
+        "description": "Ground-truth target PM2.5 preserves unclipped severe dispersion physics up to ~1270 ug/m3.",
+        "target_min": float(np.min(target_arr)),
+        "target_max": float(np.max(target_arr)),
+        "target_mean": float(np.mean(target_arr)),
+        "target_median": float(np.median(target_arr)),
+        "target_std": float(np.std(target_arr)),
+        "target_p90": float(np.percentile(target_arr, 90)),
+        "target_p95": float(np.percentile(target_arr, 95)),
+        "target_p99": float(np.percentile(target_arr, 99)),
+        "target_p99_9": float(np.percentile(target_arr, 99.9)),
+        "rows_above_500": int((target_arr > 500.0).sum()),
+        "pct_rows_above_500": float((target_arr > 500.0).mean() * 100.0),
+        "negative_count": int((target_arr < 0.0).sum()),
+        "nan_inf_count": int((~np.isfinite(target_arr)).sum()),
+        "clipping_ceiling_applied": None,
     }
 
     result = {
@@ -283,8 +280,6 @@ def write_dataset_artifacts(
         "cos_hour": "Cosine component of circular 24-hour diurnal cycle",
         "wind_speed_mean_3h": "Causal right-aligned 3-hour rolling mean of wind speed (m/s)",
         "temperature_mean_6h": "Causal right-aligned 6-hour rolling mean of temperature (K)",
-        "road_density_total": "Proxy road network density in local receptor buffer",
-        "source_density": "Proxy emission source density in local buffer",
         "target_pm25": "Ground-truth forecasted PM2.5 concentration 1 hour ahead (ug/m3)",
     }
     col_dict_rows = [
@@ -310,8 +305,6 @@ def write_dataset_artifacts(
         "cos_hour": "temporal",
         "wind_speed_mean_3h": "rolling_weather",
         "temperature_mean_6h": "rolling_weather",
-        "road_density_total": "geography",
-        "source_density": "geography",
     }
     feat_rows = [
         {

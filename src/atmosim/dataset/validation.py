@@ -27,7 +27,7 @@ _FEATURE_RANGES: Dict[str, Tuple[float, float]] = {
     "relative_humidity": (0.0, 1.0),
     "surface_pressure": (80000.0, 110000.0),  # Pa
     "pblh": (0.0, 5000.0),
-    "target_pm25": (0.0, 500.0),  # µg/m³
+    "target_pm25": (0.0, 2500.0),  # µg/m³ (unclipped severe inversion physics)
 }
 
 

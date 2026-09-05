@@ -17,6 +17,10 @@ from atmosim.data.overpass import (
     RawOsmFeature,
     OverpassConnector,
 )
+from atmosim.data.openaq import (
+    AirQualityRecord,
+    OpenAQConnector,
+)
 
 __all__ = [
     "DataCache",
@@ -28,4 +32,6 @@ __all__ = [
     "TerrainConnector",
     "RawOsmFeature",
     "OverpassConnector",
+    "AirQualityRecord",
+    "OpenAQConnector",
 ]

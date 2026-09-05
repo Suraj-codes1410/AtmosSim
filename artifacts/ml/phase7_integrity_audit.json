@@ -1,0 +1,176 @@
+{
+  "verdict": "PHASE 7 READY TO FREEZE",
+  "feature_traceability": {
+    "feature_count": 17,
+    "operational_features": [
+      "wind_speed",
+      "wind_u",
+      "wind_v",
+      "temperature",
+      "relative_humidity",
+      "surface_pressure",
+      "pblh",
+      "stability_class",
+      "hour",
+      "day_of_week",
+      "month",
+      "sin_hour",
+      "cos_hour",
+      "wind_speed_mean_3h",
+      "temperature_mean_6h",
+      "road_density_total",
+      "source_density"
+    ],
+    "forbidden_state_present": false,
+    "target_in_features": false,
+    "identifiers_in_features": false,
+    "constant_features": [
+      "surface_pressure",
+      "day_of_week",
+      "month",
+      "road_density_total",
+      "source_density"
+    ]
+  },
+  "emission_strength_audit": {
+    "emission_rate_values_g_s": [
+      0.5,
+      1.0,
+      2.0
+    ],
+    "q_present_in_features": false,
+    "q_proxy_present": false,
+    "max_correlation_q_with_features": 0.0,
+    "physical_mechanism_explanation": "Atmospheric stability and wind speed span 3 orders of magnitude in concentration variation (1000x across A-F and 10x across 1-10 m/s), whereas Q varies by only 4x (0.5 to 2.0 g/s). Thus, stability and wind explain 85% of target variance without knowing Q. Adding Q increases R2 to 0.9961."
+  },
+  "feature_ablation_results": {
+    "A_all_17_features": {
+      "test_rmse": 50.95,
+      "test_r2": 0.852,
+      "cross_rmse": 50.7,
+      "cross_r2": 0.86
+    },
+    "B_meteorology_only_no_stability": {
+      "test_rmse": 113.98,
+      "test_r2": 0.259,
+      "cross_rmse": 115.68,
+      "cross_r2": 0.271
+    },
+    "C_remove_calendar": {
+      "test_rmse": 51.56,
+      "test_r2": 0.848,
+      "cross_rmse": 50.91,
+      "cross_r2": 0.859
+    },
+    "D_remove_rolling": {
+      "test_rmse": 51.19,
+      "test_r2": 0.851,
+      "cross_rmse": 50.72,
+      "cross_r2": 0.86
+    },
+    "E_remove_constants": {
+      "test_rmse": 50.75,
+      "test_r2": 0.853,
+      "cross_rmse": 50.64,
+      "cross_r2": 0.86
+    },
+    "F_stability_and_wind_only": {
+      "test_rmse": 51.35,
+      "test_r2": 0.85,
+      "cross_rmse": 52.17,
+      "cross_r2": 0.852
+    }
+  },
+  "negative_control_results": {
+    "method": "random_permutation_y_train",
+    "canonical_rf_test_rmse": 50.71,
+    "canonical_rf_test_r2": 0.853,
+    "shuffled_rf_test_rmse": 138.19,
+    "shuffled_rf_test_mae": 96.48,
+    "shuffled_rf_test_r2": -0.0885,
+    "shuffled_rf_cross_rmse": 146.22,
+    "shuffled_rf_cross_r2": -0.1647,
+    "leakage_detected": false
+  },
+  "extreme_value_audit": {
+    "train_p90": 259.3329,
+    "train_p95": 500.0,
+    "train_p99": 500.0,
+    "p95_p99_collapse": true,
+    "top_5pct_and_top_1pct_identical": true,
+    "sample_count_test_p95_p99": 24
+  },
+  "geographic_split_audit": {
+    "r001_rows": 2484,
+    "r002_rows": 2484,
+    "target_mean_r001": 87.3574,
+    "target_mean_r002": 87.3574,
+    "distribution_identical": true,
+    "nature_of_test": "Controlled synthetic domain transfer across independent scenario instances, not heterogeneous topographical generalization."
+  },
+  "temporal_split_audit": {
+    "train_hours": "00:00-15:00",
+    "validation_hours": "16:00-18:00",
+    "test_hours": "19:00-22:00",
+    "temporal_overlap": 0,
+    "nature_of_test": "Diurnal boundary-layer transition within a single simulated 24h day; does not demonstrate multi-day or seasonal temporal generalization."
+  },
+  "bootstrap_test_rmse_50_resamples": {
+    "rf": {
+      "mean": 51.05,
+      "std": 2.67,
+      "ci_95": [
+        46.3,
+        56.5
+      ]
+    },
+    "xgb": {
+      "mean": 52.14,
+      "std": 3.39,
+      "ci_95": [
+        46.1,
+        59.2
+      ]
+    },
+    "cat": {
+      "mean": 52.44,
+      "std": 2.35,
+      "ci_95": [
+        47.8,
+        57.1
+      ]
+    },
+    "lgb": {
+      "mean": 53.25,
+      "std": 3.41,
+      "ci_95": [
+        47.2,
+        60.1
+      ]
+    },
+    "ridge": {
+      "mean": 97.42,
+      "std": 2.17,
+      "ci_95": [
+        93.1,
+        101.8
+      ]
+    },
+    "linear": {
+      "mean": 110.17,
+      "std": 2.33,
+      "ci_95": [
+        105.7,
+        114.9
+      ]
+    },
+    "pers": {
+      "mean": 132.34,
+      "std": 7.99,
+      "ci_95": [
+        116.8,
+        147.9
+      ]
+    }
+  }
+}

@@ -18,6 +18,4 @@ sin_hour,float64,Sine component of circular 24-hour diurnal cycle
 cos_hour,float64,Cosine component of circular 24-hour diurnal cycle
 wind_speed_mean_3h,float64,Causal right-aligned 3-hour rolling mean of wind speed (m/s)
 temperature_mean_6h,float64,Causal right-aligned 6-hour rolling mean of temperature (K)
-road_density_total,float64,Proxy road network density in local receptor buffer
-source_density,float64,Proxy emission source density in local buffer
 target_pm25,float64,Ground-truth forecasted PM2.5 concentration 1 hour ahead (ug/m3)

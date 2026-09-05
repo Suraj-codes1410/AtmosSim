@@ -1,0 +1,107 @@
+{
+  "dataset_version": "v1.0",
+  "feature_version": "v1.0",
+  "target": "target_pm25",
+  "forecast_horizon": "1 hour",
+  "feature_list": [
+    "wind_speed",
+    "wind_u",
+    "wind_v",
+    "temperature",
+    "relative_humidity",
+    "surface_pressure",
+    "pblh",
+    "stability_class",
+    "hour",
+    "day_of_week",
+    "month",
+    "sin_hour",
+    "cos_hour",
+    "wind_speed_mean_3h",
+    "temperature_mean_6h"
+  ],
+  "models": {
+    "persistence": {
+      "model_name": "persistence",
+      "strategy": "training_target_mean_persistence",
+      "mean_target": 108.05975832312858
+    },
+    "linear": {
+      "model_name": "linear",
+      "package": "sklearn.linear_model.LinearRegression",
+      "fit_intercept": true
+    },
+    "ridge": {
+      "model_name": "ridge",
+      "package": "sklearn.linear_model.Ridge",
+      "alpha": 1.0,
+      "random_state": 42
+    },
+    "random_forest": {
+      "model_name": "random_forest",
+      "package": "sklearn.ensemble.RandomForestRegressor",
+      "n_estimators": 100,
+      "max_depth": 12,
+      "min_samples_split": 2,
+      "min_samples_leaf": 1,
+      "max_features": "sqrt",
+      "random_state": 42
+    },
+    "xgboost": {
+      "model_name": "xgboost",
+      "package": "xgboost.XGBRegressor",
+      "package_version": "3.4.0",
+      "objective": "reg:squarederror",
+      "n_estimators": 100,
+      "learning_rate": 0.05,
+      "max_depth": 6,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42
+    },
+    "lightgbm": {
+      "model_name": "lightgbm",
+      "package": "lightgbm.LGBMRegressor",
+      "package_version": "4.7.0",
+      "objective": "regression",
+      "n_estimators": 100,
+      "learning_rate": 0.05,
+      "num_leaves": 31,
+      "max_depth": -1,
+      "subsample": 0.8,
+      "random_state": 42
+    },
+    "catboost": {
+      "model_name": "catboost",
+      "package": "catboost.CatBoostRegressor",
+      "package_version": "1.2.10",
+      "loss_function": "RMSE",
+      "iterations": 100,
+      "learning_rate": 0.05,
+      "depth": 6,
+      "random_seed": 42
+    }
+  },
+  "random_seed": 42,
+  "split_sample_counts": {
+    "train": 1728,
+    "validation": 324,
+    "test": 432,
+    "cross_location_test": 2484
+  },
+  "environment": {
+    "python_version": "3.14.4",
+    "platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.43",
+    "cpu_count": 32,
+    "package_versions": {
+      "scikit-learn": "1.9.0",
+      "xgboost": "3.4.0",
+      "lightgbm": "4.7.0",
+      "catboost": "1.2.10",
+      "numpy": "2.4.6",
+      "pandas": "2.3.3"
+    },
+    "git_commit": "0bcc0ab9fe24018fd982f8ce9891ccbdfaae9dbb"
+  },
+  "configuration_hash": "a1fbb74df1f224dcfcc18ce02f201972627b1c46a26b78d85731e0634921157b"
+}
