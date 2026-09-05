@@ -50,3 +50,6 @@ Thumbs.db
 .cache/
 cache/
 catboost_info/
+
+# Agent context files
+AGENT_CONTEXT.md
