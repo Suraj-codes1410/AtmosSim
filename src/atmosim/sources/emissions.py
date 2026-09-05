@@ -213,6 +213,10 @@ class ProxyEmissionParameterizer:
         ef = self.config.emission_factors.get(road_class, self.config.emission_factors["default"])
         aadt = self.config.aadt_by_class.get(road_class, self.config.aadt_by_class["default"])
 
+        # Oneway dual-carriageway correction: if oneway=yes, directional traffic is half of 2-way AADT
+        if segment.osm_tags.get("oneway") == "yes":
+            aadt *= 0.5
+
         activity_mult = self.config.traffic_profile.get_multiplier(timestamp)
 
         # 1. Length in kilometers
@@ -244,6 +248,12 @@ class ProxyEmissionParameterizer:
             dt = datetime.fromtimestamp(current_time, tz=timezone.utc)
             return self.compute_road_segment_emission_rate(segment, dt)
 
+        # EPA CALINE4 / ISC3 line-source volume representation: initial sigma scales with segment length
+        L = segment.length_meters
+        sx0 = max(5.0, L / 2.15)
+        sy0 = max(5.0, 12.0 / 2.15)
+        sz0 = max(1.5, 3.5 / 2.15)
+
         emission_source = EmissionSource(
             source_id=segment.segment_id,
             x=mx,
@@ -251,7 +261,7 @@ class ProxyEmissionParameterizer:
             z=self.config.release_height_m,
             emission_rate=q_func,
             release_interval=release_interval,
-            initial_sigma=self.config.initial_sigma,
+            initial_sigma=(sx0, sy0, sz0),
         )
 
         ef_val = self.config.emission_factors.get(segment.road_class, self.config.emission_factors["default"])
