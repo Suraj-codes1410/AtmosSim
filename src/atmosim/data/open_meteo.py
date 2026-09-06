@@ -333,9 +333,13 @@ class OpenMeteoConnector:
                 tmp = tmp if tmp is not None else 20.0
                 rh = rh if rh is not None else 50.0
 
-            # Default boundary layer height if missing from model
+            # Boundary layer height imputation if missing from model archive
             if pblh is None or not math.isfinite(pblh) or pblh <= 0:
-                pblh = 1000.0  # standard convective boundary layer default
+                # Winter cold/fog inversion conditions (Nov-Feb, low temp): shallow boundary layer (150-350m)
+                if dt.month in (11, 12, 1, 2) and tmp < 18.0:
+                    pblh = 180.0 if rh > 80.0 else 350.0
+                else:
+                    pblh = 1000.0  # standard convective boundary layer default
 
             records.append(
                 HourlyMeteorologicalRecord(

@@ -21,6 +21,12 @@ from atmosim.data.openaq import (
     AirQualityRecord,
     OpenAQConnector,
 )
+from atmosim.data.regional_background import (
+    HourlyRegionalRecord,
+    RegionalBackgroundConnector,
+    RegionalBackgroundSource,
+    RegionalBackgroundTimeSeries,
+)
 
 __all__ = [
     "DataCache",
@@ -34,4 +40,8 @@ __all__ = [
     "OverpassConnector",
     "AirQualityRecord",
     "OpenAQConnector",
+    "HourlyRegionalRecord",
+    "RegionalBackgroundConnector",
+    "RegionalBackgroundSource",
+    "RegionalBackgroundTimeSeries",
 ]

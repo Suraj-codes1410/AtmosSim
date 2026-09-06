@@ -1,0 +1,41 @@
+{
+  "dataset_name": "AtmosSim_Mumbai_2023_Annual_Continuous",
+  "version": "1.0",
+  "city": "Mumbai",
+  "latitude": 19.076,
+  "longitude": 72.8777,
+  "year": 2023,
+  "total_samples": 8760,
+  "temporal_resolution": "1_hour",
+  "start_time_utc": "2023-01-01T00:00:00+00:00",
+  "end_time_utc": "2023-12-31T23:00:00+00:00",
+  "road_segments_count": 237996,
+  "aadt_calibration_factor": 6.5,
+  "aadt_inventory_source": "IIT Kanpur / TERI (2018) Comprehensive Delhi Study",
+  "regional_background_provider": "Copernicus Atmosphere Monitoring Service (CAMS) Global Reanalysis via Open-Meteo",
+  "meteorology_provider": "Open-Meteo ERA5 Historical Archive",
+  "regime_distribution": {
+    "humid_maritime_transition": 4008,
+    "south_asian_monsoon": 2592,
+    "coastal_winter_inversion": 2160
+  },
+  "confidence_level_distribution": {
+    "high": 6168,
+    "medium": 2592
+  },
+  "known_bias_distribution": {
+    "unbiased": 6168,
+    "positive": 2592
+  },
+  "target_statistics": {
+    "mean_pm25": 82.57,
+    "median_pm25": 66.0,
+    "std_pm25": 71.15,
+    "min_pm25": 7.74,
+    "max_pm25": 688.95,
+    "p25_pm25": 26.91,
+    "p75_pm25": 111.53,
+    "p95_pm25": 215.99
+  },
+  "created_at": "2026-09-06T11:53:49.858268+00:00"
+}

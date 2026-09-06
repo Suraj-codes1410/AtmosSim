@@ -30,12 +30,15 @@ class TemporalTrafficProfile:
         24 normalized hourly multipliers for hours 0 through 23.
     weekend_multiplier : float, default=0.85
         Scaling factor applied on Saturday and Sunday (e.g. 0.85 for 15% reduction).
+    monthly_multipliers : Optional[Dict[int, float]], optional
+        Optional 1-12 monthly scaling factors (e.g. monsoon moisture suppression).
     source_reference : str
         Literature citation or synthetic specification note.
     """
     profile_name: str
     hourly_factors: List[float]
     weekend_multiplier: float = 0.85
+    monthly_multipliers: Optional[Dict[int, float]] = None
     source_reference: str = "Synthetic/Default Urban Diurnal Profile"
 
     def __post_init__(self):
@@ -69,7 +72,9 @@ class TemporalTrafficProfile:
         hour = dt.hour
         base_h = self.hourly_factors[hour]
         is_weekend = dt.weekday() >= 5  # 5=Saturday, 6=Sunday
-        return float(base_h * (self.weekend_multiplier if is_weekend else 1.0))
+        weekend_factor = self.weekend_multiplier if is_weekend else 1.0
+        month_factor = self.monthly_multipliers.get(dt.month, 1.0) if self.monthly_multipliers else 1.0
+        return float(base_h * weekend_factor * month_factor)
 
     @classmethod
     def default_urban_diurnal(cls) -> "TemporalTrafficProfile":
@@ -91,6 +96,33 @@ class TemporalTrafficProfile:
             hourly_factors=raw_shape,
             weekend_multiplier=0.85,
             source_reference="AtmosSim Default Urban Bimodal Traffic Activity Parameterization",
+        )
+
+    @classmethod
+    def default_indian_urban(cls) -> "TemporalTrafficProfile":
+        """
+        Indian urban profile with seasonal road-dust / moisture scaling (IIT Kanpur / CPCB):
+        - Peak dry winter emissions (Nov-Feb: 1.0)
+        - Summer pre-monsoon (Mar-May: 0.85)
+        - Monsoon washout / moisture suppression (Jun-Sep: 0.25 - 0.40)
+        - Post-monsoon transition (Oct: 0.75)
+        """
+        raw_shape = [
+            0.25, 0.18, 0.15, 0.15, 0.22, 0.50,  # 00:00 - 05:00
+            0.95, 1.60, 1.85, 1.55, 1.25, 1.15,  # 06:00 - 11:00
+            1.10, 1.15, 1.20, 1.40, 1.70, 1.95,  # 12:00 - 17:00
+            1.80, 1.45, 1.05, 0.75, 0.50, 0.35,  # 18:00 - 23:00
+        ]
+        monthly_moisture = {
+            1: 1.0, 2: 0.90, 3: 0.85, 4: 0.85, 5: 0.85,
+            6: 0.40, 7: 0.25, 8: 0.25, 9: 0.35, 10: 0.75, 11: 1.0, 12: 1.0
+        }
+        return cls(
+            profile_name="Indian_Urban_Seasonal_Diurnal",
+            hourly_factors=raw_shape,
+            weekend_multiplier=0.85,
+            monthly_multipliers=monthly_moisture,
+            source_reference="IIT Kanpur (2018) & CPCB Indian Urban Fleet & Road Dust Seasonal Activity Profile",
         )
 
     @classmethod

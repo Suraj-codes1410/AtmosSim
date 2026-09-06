@@ -94,21 +94,27 @@ class LocalCoordinateSystem:
             epsg = determine_utm_epsg(self.origin_lat, self.origin_lon)
             object.__setattr__(self, "crs_epsg", epsg)
 
+        fwd = Transformer.from_crs("EPSG:4326", f"EPSG:{self.crs_epsg}", always_xy=True)
+        inv = Transformer.from_crs(f"EPSG:{self.crs_epsg}", "EPSG:4326", always_xy=True)
+        e0, n0 = fwd.transform(self.origin_lon, self.origin_lat)
+        object.__setattr__(self, "_transformer_fwd_obj", fwd)
+        object.__setattr__(self, "_transformer_inv_obj", inv)
+        object.__setattr__(self, "_origin_projected_tuple", (float(e0), float(n0)))
+
     @property
     def _transformer_fwd(self) -> "Transformer":
         """Transformer from WGS84 (EPSG:4326) to projected CRS."""
-        return Transformer.from_crs("EPSG:4326", f"EPSG:{self.crs_epsg}", always_xy=True)
+        return getattr(self, "_transformer_fwd_obj")
 
     @property
     def _transformer_inv(self) -> "Transformer":
         """Transformer from projected CRS to WGS84 (EPSG:4326)."""
-        return Transformer.from_crs(f"EPSG:{self.crs_epsg}", "EPSG:4326", always_xy=True)
+        return getattr(self, "_transformer_inv_obj")
 
     @property
     def _origin_projected(self) -> Tuple[float, float]:
         """Projected coordinates (East, North) of the local origin."""
-        e0, n0 = self._transformer_fwd.transform(self.origin_lon, self.origin_lat)
-        return float(e0), float(n0)
+        return getattr(self, "_origin_projected_tuple")
 
     def geo_to_cartesian(
         self,

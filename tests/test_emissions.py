@@ -194,3 +194,16 @@ class TestEmissionMassConservationAndIndustrialSafety:
         assert ind_poly.emission_status == "unavailable"
         assert not hasattr(ind_poly, "emission_rate")
 
+    def test_indian_urban_seasonal_moisture_scaling(self):
+        """Verify Indian urban profile applies monsoon moisture suppression."""
+        profile = TemporalTrafficProfile.default_indian_urban()
+        dt_winter = datetime(2026, 1, 15, 12, 0, tzinfo=timezone.utc)
+        dt_monsoon = datetime(2026, 8, 15, 12, 0, tzinfo=timezone.utc)  # Saturday
+
+        m_winter = profile.get_multiplier(dt_winter)
+        m_monsoon = profile.get_multiplier(dt_monsoon)
+
+        # Monsoon activity multiplier should be strongly reduced compared to winter
+        assert m_monsoon < 0.35 * m_winter
+
+
