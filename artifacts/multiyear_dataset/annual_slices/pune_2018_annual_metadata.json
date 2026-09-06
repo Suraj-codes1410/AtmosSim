@@ -1,0 +1,41 @@
+{
+  "dataset_name": "AtmosSim_Pune_2018_Annual_Continuous",
+  "version": "1.0",
+  "city": "Pune",
+  "latitude": 18.5204,
+  "longitude": 73.8567,
+  "year": 2018,
+  "total_samples": 8760,
+  "temporal_resolution": "1_hour",
+  "start_time_utc": "2018-01-01T00:00:00+00:00",
+  "end_time_utc": "2018-12-31T23:00:00+00:00",
+  "road_segments_count": 319643,
+  "aadt_calibration_factor": 22.1,
+  "aadt_inventory_source": "SAFAR-Pune / ARAI (2020) Emission Inventory",
+  "regional_background_provider": "Copernicus Atmosphere Monitoring Service (CAMS) Global Reanalysis via Open-Meteo",
+  "meteorology_provider": "Open-Meteo ERA5 Historical Archive",
+  "regime_distribution": {
+    "dry_plateau_transition": 3960,
+    "south_asian_monsoon": 2592,
+    "plateau_winter_stagnation": 2208
+  },
+  "confidence_level_distribution": {
+    "high": 6168,
+    "medium": 2592
+  },
+  "known_bias_distribution": {
+    "unbiased": 6168,
+    "positive": 2592
+  },
+  "target_statistics": {
+    "mean_pm25": 123.76,
+    "median_pm25": 89.35,
+    "std_pm25": 97.76,
+    "min_pm25": 25.26,
+    "max_pm25": 825.98,
+    "p25_pm25": 44.5,
+    "p75_pm25": 183.47,
+    "p95_pm25": 298.96
+  },
+  "created_at": "2026-09-06T18:42:55.608287+00:00"
+}

@@ -1,0 +1,75 @@
+{
+  "dataset_name": "AtmosSim_MultiCity_2018_2024_Master_Continuous",
+  "version": "2.0",
+  "cities": [
+    "Delhi",
+    "Mumbai",
+    "Pune",
+    "Bengaluru"
+  ],
+  "start_year": 2018,
+  "end_year": 2024,
+  "total_hourly_records": 245472,
+  "total_city_years": 28,
+  "city_profiles": {
+    "Delhi": {
+      "latitude": 28.6139,
+      "longitude": 77.209,
+      "aadt_calibration_factor": 37.84,
+      "inventory_source": "IIT Kanpur / TERI (2018) Comprehensive Delhi Study",
+      "climate_zone": "indo_gangetic_plain"
+    },
+    "Mumbai": {
+      "latitude": 19.076,
+      "longitude": 72.8777,
+      "aadt_calibration_factor": 6.5,
+      "inventory_source": "NEERI / SAFAR-Mumbai (2020) High-Resolution Emission Inventory (CNG Fleet Calibrated)",
+      "climate_zone": "coastal_maritime"
+    },
+    "Pune": {
+      "latitude": 18.5204,
+      "longitude": 73.8567,
+      "aadt_calibration_factor": 22.1,
+      "inventory_source": "SAFAR-Pune / ARAI (2020) Emission Inventory",
+      "climate_zone": "deccan_plateau"
+    },
+    "Bengaluru": {
+      "latitude": 12.9716,
+      "longitude": 77.5946,
+      "aadt_calibration_factor": 24.8,
+      "inventory_source": "CSTEP / IISc (2020) Clean Air Action Plan for Bengaluru",
+      "climate_zone": "southern_plateau"
+    }
+  },
+  "per_city_records": {
+    "Delhi": 61368,
+    "Mumbai": 61368,
+    "Pune": 61368,
+    "Bengaluru": 61368
+  },
+  "overall_summary_statistics": {
+    "mean_pm25": 123.19,
+    "median_pm25": 93.09,
+    "p95_pm25": 316.6,
+    "max_pm25": 2115.61
+  },
+  "regime_distribution": {
+    "south_asian_monsoon": 72576,
+    "dry_plateau_transition": 55536,
+    "plateau_winter_stagnation": 30912,
+    "humid_maritime_transition": 28056,
+    "dry_moderate_transition": 24912,
+    "coastal_winter_inversion": 15168,
+    "winter_fog_inversion": 10416,
+    "stubble_burning": 7896
+  },
+  "confidence_distribution": {
+    "high": 154584,
+    "medium": 90888
+  },
+  "known_bias_distribution": {
+    "unbiased": 154584,
+    "positive": 72576,
+    "negative": 18312
+  }
+}

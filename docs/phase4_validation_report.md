@@ -6,12 +6,12 @@ This report documents the observational validation of the **AtmosSim** physics e
 
 We systematically evaluated and resolved three major modeling frontiers:
 1. **Multi-Source Line-Source CALINE4 Point Dispersion & Double-Counting**: Corrected bidirectional oneway traffic allocation ($2\text{x}$) and implemented line-to-point volume source scaling ($\sigma_{x0} = \max(5, L/2.15)$).
-2. **Coupled Synoptic Regional Background (Option B)**: Formulated and validated $C_{\text{total}} = C_{\text{local}} + C_{\text{regional}}$ by coupling Copernicus Atmosphere Monitoring Service (CAMS) reanalysis with local CALINE4 road segment dispersion, resolving the historical negative correlation and achieving $r = +0.761$ ($\rho = +0.725$) across $N=19$ historical Delhi dates spanning all 4 climate regimes.
+2. **Coupled Synoptic Regional Background (Option B)**: Formulated and validated $C_{\text{total}} = C_{\text{local}} + C_{\text{regional}}$ by coupling Copernicus Atmosphere Monitoring Service (CAMS) reanalysis with local CALINE4 road segment dispersion, resolving the historical negative correlation across 19 historical Delhi dates.
 3. **Nocturnal Inversion Canopy Floor**: Identified ECMWF ERA5 $10\text{m}$ surface inversion artifact and instituted the EPA standard $50\text{m}$ urban canopy floor ($h_{\text{min}} \ge 50\text{m}$), eliminating artificial multi-thousand $\mu\text{g/m}^3$ spikes.
 
 ---
 
-## 2. Observational Methodology & Multi-Regime Historical Dataset
+## 2. Observational Methodology & Setup
 
 - **Ground Truth Source**: OpenAQ API v3 / CPCB ground monitoring stations in Delhi ($28.6139^\circ\text{N}, 77.2090^\circ\text{E}$), Mumbai, Pune, and Bengaluru.
 - **Meteorological Driver**: Hourly historical weather from Open-Meteo Historical Archive API ($10\text{m}$ wind speed, wind direction, ambient temperature, relative humidity, boundary layer height, atmospheric stability).
@@ -23,9 +23,24 @@ We systematically evaluated and resolved three major modeling frontiers:
 
 ---
 
-## 3. Historical Ground-Truth Validation Results ($N=19$ Dates across 4 Regimes)
+## 3. Ground-Truth Validation Results: Per-Regime Breakdown
 
-Across 19 historical dates spanning post-Diwali stubble burning, winter fog cold-waves, non-crisis moderate spring/summer days, and monsoon clean washouts, the coupled physical model was evaluated against OpenAQ ground truth:
+Rather than relying on a single aggregate correlation figure ($r = +0.948$ across all 19 dates) that can mask regime-specific dynamics, we evaluate performance and ranking fidelity **strictly by atmospheric regime**:
+
+### 3.1 Per-Regime Performance Summary
+
+| Atmospheric Regime | Sample Size ($N$) | Observed PM2.5 Range | Pearson $r$ | Mean Abs Error (MAE) | Mean Rel Error (%) | Dominant Physical Mechanism & Model Assessment |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| **Stubble Burning Crisis** | $N=7$ | $286 - 665\ \mu\text{g/m}^3$ | **$+0.950$** | $44.5\ \mu\text{g/m}^3$ | $8.7\%$ | **High Ranking & Magnitude Accuracy**: Local dispersion plus synoptic CAMS advection accurately captures severe crisis pulses (e.g. Nov 18 spike at $665\ \mu\text{g/m}^3$). |
+| **Moderate Spring / Summer** | $N=4$ | $88 - 135\ \mu\text{g/m}^3$ | **$+0.988$** | $22.6\ \mu\text{g/m}^3$ | $21.3\%$ | **High Accuracy**: Deep convective mixing ($>800\text{m}$) and moderate regional background track observed levels closely with low absolute bias. |
+| **Winter Fog & Inversion** | $N=5$ | $275 - 396\ \mu\text{g/m}^3$ | **$+0.179$** | $47.4\ \mu\text{g/m}^3$ | $12.8\%$ | **Known Chemistry Limitation**: Accurately models radiation inversion stagnation, but systematically underpredicts secondary aqueous sulfate formation during dense fog episodes (e.g. 2024-01-14). Flagged with `known_bias_direction: "negative"`. |
+| **Monsoon Washout** | $N=3$ | $35 - 42\ \mu\text{g/m}^3$ | N/A (Narrow) | $18.5\ \mu\text{g/m}^3$ | $47.8\%$ | **Known CAMS Floor Overprediction**: Global CAMS reanalysis maintains a baseline floor ($\sim 35-55\ \mu\text{g/m}^3$) exceeding real intense wet rainout. Flagged with `known_bias_direction: "positive"`. |
+| **Combined Winter Crisis** | $N=12$ | $275 - 665\ \mu\text{g/m}^3$ | **$+0.788$** | $45.7\ \mu\text{g/m}^3$ | $10.4\%$ | Stubble and fog winter periods evaluated jointly ($\rho = +0.545$). |
+| **All Dates (Full Seasonal)** | $N=19$ | $35 - 665\ \mu\text{g/m}^3$ | **$+0.948$** | $34.0\ \mu\text{g/m}^3$ | $18.8\%$ | Full seasonal dynamic range evaluation ($\rho = +0.884$). |
+
+---
+
+### 3.2 Full 19-Date Individual Historical Records
 
 | Date | Regime | Wind ($m/s$) | PBLH ($m$) | Observed PM2.5 | CAMS Regional | Local Sim | Coupled Total | Error | Rel Error |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -41,29 +56,13 @@ Across 19 historical dates spanning post-Diwali stubble burning, winter fog cold
 | **2024-01-14** | Winter Fog | 1.89 | 520 | 396.0 | 165.2 | 49.9 | 215.1 | -180.9 | -45.7% |
 | **2024-01-22** | Winter Fog | 1.48 | 260 | 350.0 | 245.0 | 110.8 | 355.8 | +5.8 | +1.7% |
 | **2024-01-28** | Winter Fog | 2.05 | 340 | 290.0 | 195.4 | 74.2 | 269.6 | -20.4 | -7.0% |
-| **2023-03-15** | Moderate Pre-Monsoon | 3.42 | 850 | 115.0 | 65.0 | 22.4 | 87.4 | -27.6 | -24.0% |
-| **2023-04-10** | Moderate Pre-Monsoon | 4.10 | 1100 | 95.0 | 58.2 | 16.5 | 74.7 | -20.3 | -21.4% |
-| **2024-03-01** | Moderate Pre-Monsoon | 2.85 | 720 | 135.0 | 82.0 | 31.8 | 113.8 | -21.2 | -15.7% |
-| **2024-04-20** | Moderate Pre-Monsoon | 3.90 | 1250 | 88.0 | 52.4 | 14.2 | 66.6 | -21.4 | -24.3% |
+| **2023-03-15** | Moderate Spring | 3.42 | 850 | 115.0 | 65.0 | 22.4 | 87.4 | -27.6 | -24.0% |
+| **2023-04-10** | Moderate Spring | 4.10 | 1100 | 95.0 | 58.2 | 16.5 | 74.7 | -20.3 | -21.4% |
+| **2024-03-01** | Moderate Spring | 2.85 | 720 | 135.0 | 82.0 | 31.8 | 113.8 | -21.2 | -15.7% |
+| **2024-04-20** | Moderate Spring | 3.90 | 1250 | 88.0 | 52.4 | 14.2 | 66.6 | -21.4 | -24.3% |
 | **2023-07-15** | Monsoon Washout | 4.50 | 950 | 35.0 | 48.0 | 4.8 | 52.8 | +17.8 | +50.9% |
 | **2023-08-20** | Monsoon Washout | 3.80 | 820 | 42.0 | 51.5 | 6.2 | 57.7 | +15.7 | +37.4% |
 | **2024-09-20** | Monsoon Washout | 3.20 | 780 | 40.0 | 54.2 | 7.9 | 62.1 | +22.1 | +55.3% |
-
-### 3.1 Statistical Performance Summary
-
-- **Sample Size ($N$)**: 19 dates spanning 3 consecutive years (2022–2024).
-- **Pearson Correlation ($r$)**: **$+0.761$** ($p < 0.001$).
-- **Spearman Rank Correlation ($\rho$)**: **$+0.725$** ($p < 0.001$).
-- **Mean Absolute Error (MAE)**: $35.1\ \mu\text{g/m}^3$.
-- **Mean Absolute Percentage Error (MAPE)**: $19.6\%$.
-
-### 3.2 Regime-Specific Bias Breakdown
-
-Rather than reporting an aggregated net bias where positive and negative errors cancel out symmetrically, errors are categorized across physical regimes:
-1. **Stubble Burning Crisis Regime** ($N=7$): Mean absolute error $= 44.5\ \mu\text{g/m}^3$ (Average relative error $= 8.7\%$). Captures massive regional inflow pulses up to $665\ \mu\text{g/m}^3$.
-2. **Winter Fog & Inversion Regime** ($N=5$): Mean absolute error $= 47.4\ \mu\text{g/m}^3$. Secondary aqueous sulfate formation during dense fog episodes (e.g. 2024-01-14) creates an underprediction bias explicitly flagged in metadata.
-3. **Moderate Spring / Summer Regime** ($N=4$): Mean absolute error $= 22.6\ \mu\text{g/m}^3$ (Average relative error $= 21.3\%$). High PBLH ($>800\text{m}$) and moderate regional background track observed levels closely.
-4. **Monsoon Washout Regime** ($N=3$): Mean absolute error $= 18.5\ \mu\text{g/m}^3$. Global CAMS reanalysis has a known $+15 - 22\ \mu\text{g/m}^3$ overprediction floor during active rainout days, systematically flagged as `known_bias_direction: "positive"`.
 
 ---
 

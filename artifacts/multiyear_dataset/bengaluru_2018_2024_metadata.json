@@ -1,0 +1,29 @@
+{
+  "dataset_name": "AtmosSim_Bengaluru_2018_2024_Continuous",
+  "city": "Bengaluru",
+  "start_year": 2018,
+  "end_year": 2024,
+  "total_hourly_records": 61368,
+  "aadt_calibration_factor": 24.8,
+  "inventory_source": "CSTEP / IISc (2020) Clean Air Action Plan for Bengaluru",
+  "climate_zone": "southern_plateau",
+  "summary_statistics": {
+    "mean_pm25": 99.27,
+    "median_pm25": 77.71,
+    "p95_pm25": 240.16,
+    "max_pm25": 1250.24
+  },
+  "regime_distribution": {
+    "dry_plateau_transition": 27768,
+    "south_asian_monsoon": 18144,
+    "plateau_winter_stagnation": 15456
+  },
+  "confidence_distribution": {
+    "high": 43224,
+    "medium": 18144
+  },
+  "known_bias_distribution": {
+    "unbiased": 43224,
+    "positive": 18144
+  }
+}

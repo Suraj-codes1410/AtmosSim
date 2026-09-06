@@ -221,39 +221,12 @@ class AnnualDatasetGenerator:
         self.met_connector = OpenMeteoConnector()
         self.reg_connector = RegionalBackgroundConnector()
         self.overpass_connector = OverpassConnector()
+        self._road_data = None
 
-    def generate_full_year(
-        self,
-        output_dir: Optional[Union[str, Path]] = None,
-        save_artifacts: bool = True,
-    ) -> Tuple[pd.DataFrame, Dict[str, Any]]:
-        """
-        Generate continuous 8,760-hour simulation dataset for the specified calendar year.
+    def _get_road_sources(self):
+        if self._road_data is not None:
+            return self._road_data
 
-        Parameters
-        ----------
-        output_dir : Optional[Union[str, Path]], optional
-            Directory to save parquet, CSV, and metadata artifacts.
-        save_artifacts : bool, default=True
-            Whether to write files to disk.
-
-        Returns
-        -------
-        Tuple[pd.DataFrame, Dict[str, Any]]
-            Generated DataFrame and metadata provenance dictionary.
-        """
-        start_time = datetime(self.year, 1, 1, 0, 0, tzinfo=timezone.utc)
-        # Handle leap years automatically
-        is_leap = (self.year % 4 == 0 and self.year % 100 != 0) or (self.year % 400 == 0)
-        n_days = 366 if is_leap else 365
-        n_hours = n_days * 24
-        end_time = datetime(self.year, 12, 31, 23, 0, tzinfo=timezone.utc)
-
-        # 1. Fetch Meteorology & Regional Background
-        met_ts = self.met_connector.fetch_meteorology(self.latitude, self.longitude, start_time, end_time)
-        reg_ts = self.reg_connector.query(self.latitude, self.longitude, start_time, end_time)
-
-        # 2. Extract Road Network and Configure Calibrated Line Sources
         osm_features = self.overpass_connector.fetch_features(
             min_lat=self.latitude - 0.15,
             min_lon=self.longitude - 0.15,
@@ -293,6 +266,42 @@ class AnnualDatasetGenerator:
         src_sy0 = src_sy0[mask]
 
         base_q = (src_len_km * src_aadt * src_ef) / 86400.0
+        self._road_data = (src_x, src_y, src_sy0, base_q, config)
+        return self._road_data
+
+    def generate_full_year(
+        self,
+        output_dir: Optional[Union[str, Path]] = None,
+        save_artifacts: bool = True,
+    ) -> Tuple[pd.DataFrame, Dict[str, Any]]:
+        """
+        Generate continuous 8,760-hour simulation dataset for the specified calendar year.
+
+        Parameters
+        ----------
+        output_dir : Optional[Union[str, Path]], optional
+            Directory to save parquet, CSV, and metadata artifacts.
+        save_artifacts : bool, default=True
+            Whether to write files to disk.
+
+        Returns
+        -------
+        Tuple[pd.DataFrame, Dict[str, Any]]
+            Generated DataFrame and metadata provenance dictionary.
+        """
+        start_time = datetime(self.year, 1, 1, 0, 0, tzinfo=timezone.utc)
+        # Handle leap years automatically
+        is_leap = (self.year % 4 == 0 and self.year % 100 != 0) or (self.year % 400 == 0)
+        n_days = 366 if is_leap else 365
+        n_hours = n_days * 24
+        end_time = datetime(self.year, 12, 31, 23, 0, tzinfo=timezone.utc)
+
+        # 1. Fetch Meteorology & Regional Background
+        met_ts = self.met_connector.fetch_meteorology(self.latitude, self.longitude, start_time, end_time)
+        reg_ts = self.reg_connector.query(self.latitude, self.longitude, start_time, end_time)
+
+        # 2. Configure Calibrated Line Sources
+        src_x, src_y, src_sy0, base_q, config = self._get_road_sources()
 
         # 3. Simulate Hourly Dispersion Across Full Year
         rows = []

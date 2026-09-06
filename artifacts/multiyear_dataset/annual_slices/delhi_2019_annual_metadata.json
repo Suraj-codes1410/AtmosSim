@@ -1,0 +1,43 @@
+{
+  "dataset_name": "AtmosSim_Delhi_2019_Annual_Continuous",
+  "version": "1.0",
+  "city": "Delhi",
+  "latitude": 28.6139,
+  "longitude": 77.209,
+  "year": 2019,
+  "total_samples": 8760,
+  "temporal_resolution": "1_hour",
+  "start_time_utc": "2019-01-01T00:00:00+00:00",
+  "end_time_utc": "2019-12-31T23:00:00+00:00",
+  "road_segments_count": 485597,
+  "aadt_calibration_factor": 37.84,
+  "aadt_inventory_source": "IIT Kanpur / TERI (2018) Comprehensive Delhi Study",
+  "regional_background_provider": "Copernicus Atmosphere Monitoring Service (CAMS) Global Reanalysis via Open-Meteo",
+  "meteorology_provider": "Open-Meteo ERA5 Historical Archive",
+  "regime_distribution": {
+    "dry_moderate_transition": 3552,
+    "south_asian_monsoon": 2592,
+    "winter_fog_inversion": 1488,
+    "stubble_burning": 1128
+  },
+  "confidence_level_distribution": {
+    "medium": 5208,
+    "high": 3552
+  },
+  "known_bias_distribution": {
+    "unbiased": 3552,
+    "negative": 2616,
+    "positive": 2592
+  },
+  "target_statistics": {
+    "mean_pm25": 181.91,
+    "median_pm25": 150.87,
+    "std_pm25": 135.52,
+    "min_pm25": 26.04,
+    "max_pm25": 1869.49,
+    "p25_pm25": 78.11,
+    "p75_pm25": 247.86,
+    "p95_pm25": 424.78
+  },
+  "created_at": "2026-09-06T18:35:40.453995+00:00"
+}

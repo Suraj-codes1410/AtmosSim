@@ -32,15 +32,23 @@ This document establishes the completed **Project Verification Gate** for **Atmo
 
 ## 3. Observational Ground-Truth & Synoptic Background Coupling ($N=19$ Dates)
 
-By coupling Copernicus Atmosphere Monitoring Service (CAMS) synoptic background reanalysis with high-resolution CALINE4 local road network dispersion ($C_{\text{total}} = C_{\text{local}} + C_{\text{regional}}$), AtmosSim resolves the regional inflow gap:
+By coupling Copernicus Atmosphere Monitoring Service (CAMS) synoptic background reanalysis with high-resolution CALINE4 local road network dispersion ($C_{\text{total}} = C_{\text{local}} + C_{\text{regional}}$), AtmosSim resolves the regional inflow gap. Validation is reported strictly by atmospheric regime to prevent symmetric cancellation artifacts:
 
-- **Pearson Correlation ($r$)**: **$+0.761$** ($p < 0.001$) across 19 historical dates (2022–2024).
-- **Spearman Rank Correlation ($\rho$)**: **$+0.725$** ($p < 0.001$).
-- **Regime-Specific Accuracy**:
-  - *Stubble Burning Crisis Regime* ($N=7$): Mean Absolute Error $= 44.5\ \mu\text{g/m}^3$ (Captures massive regional pulses up to $665\ \mu\text{g/m}^3$).
-  - *Winter Fog & Inversion Regime* ($N=5$): Mean Absolute Error $= 47.4\ \mu\text{g/m}^3$ (Documented aqueous secondary sulfate underprediction).
-  - *Moderate Pre-Monsoon Regime* ($N=4$): Mean Absolute Error $= 22.6\ \mu\text{g/m}^3$ (Tracks well-mixed convective boundary layers).
-  - *Monsoon Washout Regime* ($N=3$): Mean Absolute Error $= 18.5\ \mu\text{g/m}^3$ (Flagged for CAMS regional background baseline overprediction).
+### 3.1 Per-Regime Breakdown
+- **Stubble Burning Crisis Regime ($N=7$, range $286 - 665\ \mu\text{g/m}^3$)**:
+  - **Pearson $r = +0.950$** | MAE $= 44.5\ \mu\text{g/m}^3$ | Rel Error $= 8.7\%$
+  - Accurately captures extreme regional smoke pulses advected across the Indo-Gangetic Plain.
+- **Moderate Pre-Monsoon Regime ($N=4$, range $88 - 135\ \mu\text{g/m}^3$)**:
+  - **Pearson $r = +0.988$** | MAE $= 22.6\ \mu\text{g/m}^3$ | Rel Error $= 21.3\%$
+  - Tracks convective boundary layer dilution ($>800\text{m}$) with low absolute bias.
+- **Winter Fog & Inversion Regime ($N=5$, range $275 - 396\ \mu\text{g/m}^3$)**:
+  - **Pearson $r = +0.179$** | MAE $= 47.4\ \mu\text{g/m}^3$ | Rel Error $= 12.8\%$
+  - Tracks nocturnal radiation cooling, but underpredicts secondary aqueous sulfate formation during dense fog episodes (e.g. 2024-01-14). Flagged with `known_bias_direction: "negative"`.
+- **Monsoon Washout Regime ($N=3$, range $35 - 42\ \mu\text{g/m}^3$)**:
+  - MAE $= 18.5\ \mu\text{g/m}^3$ | Rel Error $= 47.8\%$
+  - CAMS regional background maintains an elevated floor during active wet rainout. Flagged with `known_bias_direction: "positive"`.
+- **Aggregate Full-Spectrum Correlation**: $r = +0.948$ ($\rho = +0.884$) across all 19 dates ($35 - 665\ \mu\text{g/m}^3$).
+- **Winter-Only Subset Correlation**: $r = +0.788$ ($\rho = +0.545$) across the 12 high-pollution winter dates ($275 - 665\ \mu\text{g/m}^3$).
 
 ---
 

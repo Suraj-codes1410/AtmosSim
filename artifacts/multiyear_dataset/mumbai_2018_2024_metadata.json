@@ -1,0 +1,29 @@
+{
+  "dataset_name": "AtmosSim_Mumbai_2018_2024_Continuous",
+  "city": "Mumbai",
+  "start_year": 2018,
+  "end_year": 2024,
+  "total_hourly_records": 61368,
+  "aadt_calibration_factor": 6.5,
+  "inventory_source": "NEERI / SAFAR-Mumbai (2020) High-Resolution Emission Inventory (CNG Fleet Calibrated)",
+  "climate_zone": "coastal_maritime",
+  "summary_statistics": {
+    "mean_pm25": 103.73,
+    "median_pm25": 81.76,
+    "p95_pm25": 247.63,
+    "max_pm25": 1342.77
+  },
+  "regime_distribution": {
+    "humid_maritime_transition": 28056,
+    "south_asian_monsoon": 18144,
+    "coastal_winter_inversion": 15168
+  },
+  "confidence_distribution": {
+    "high": 43224,
+    "medium": 18144
+  },
+  "known_bias_distribution": {
+    "unbiased": 43224,
+    "positive": 18144
+  }
+}

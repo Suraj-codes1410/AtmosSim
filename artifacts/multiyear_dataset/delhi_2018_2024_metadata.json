@@ -1,0 +1,31 @@
+{
+  "dataset_name": "AtmosSim_Delhi_2018_2024_Continuous",
+  "city": "Delhi",
+  "start_year": 2018,
+  "end_year": 2024,
+  "total_hourly_records": 61368,
+  "aadt_calibration_factor": 37.84,
+  "inventory_source": "IIT Kanpur / TERI (2018) Comprehensive Delhi Study",
+  "climate_zone": "indo_gangetic_plain",
+  "summary_statistics": {
+    "mean_pm25": 182.9,
+    "median_pm25": 144.81,
+    "p95_pm25": 444.97,
+    "max_pm25": 2115.61
+  },
+  "regime_distribution": {
+    "dry_moderate_transition": 24912,
+    "south_asian_monsoon": 18144,
+    "winter_fog_inversion": 10416,
+    "stubble_burning": 7896
+  },
+  "confidence_distribution": {
+    "medium": 36456,
+    "high": 24912
+  },
+  "known_bias_distribution": {
+    "unbiased": 24912,
+    "negative": 18312,
+    "positive": 18144
+  }
+}
