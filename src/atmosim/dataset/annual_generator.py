@@ -428,7 +428,7 @@ class AnnualDatasetGenerator:
             "end_time_utc": end_time.isoformat(),
             "road_segments_count": int(len(src_x)),
             "aadt_calibration_factor": self.aadt_calibration_factor,
-            "aadt_inventory_source": "IIT Kanpur / TERI (2018) Comprehensive Delhi Study",
+            "aadt_inventory_source": self.inventory_source,
             "regional_background_provider": "Copernicus Atmosphere Monitoring Service (CAMS) Global Reanalysis via Open-Meteo",
             "meteorology_provider": "Open-Meteo ERA5 Historical Archive",
             "regime_distribution": df["regime"].value_counts().to_dict(),

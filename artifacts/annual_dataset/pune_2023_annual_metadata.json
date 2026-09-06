@@ -11,7 +11,7 @@
   "end_time_utc": "2023-12-31T23:00:00+00:00",
   "road_segments_count": 319643,
   "aadt_calibration_factor": 22.1,
-  "aadt_inventory_source": "IIT Kanpur / TERI (2018) Comprehensive Delhi Study",
+  "aadt_inventory_source": "SAFAR-Pune / ARAI (2020) Emission Inventory",
   "regional_background_provider": "Copernicus Atmosphere Monitoring Service (CAMS) Global Reanalysis via Open-Meteo",
   "meteorology_provider": "Open-Meteo ERA5 Historical Archive",
   "regime_distribution": {

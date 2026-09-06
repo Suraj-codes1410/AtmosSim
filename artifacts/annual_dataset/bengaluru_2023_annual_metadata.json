@@ -11,7 +11,7 @@
   "end_time_utc": "2023-12-31T23:00:00+00:00",
   "road_segments_count": 483587,
   "aadt_calibration_factor": 24.8,
-  "aadt_inventory_source": "IIT Kanpur / TERI (2018) Comprehensive Delhi Study",
+  "aadt_inventory_source": "CSTEP / IISc (2020) Clean Air Action Plan for Bengaluru",
   "regional_background_provider": "Copernicus Atmosphere Monitoring Service (CAMS) Global Reanalysis via Open-Meteo",
   "meteorology_provider": "Open-Meteo ERA5 Historical Archive",
   "regime_distribution": {
