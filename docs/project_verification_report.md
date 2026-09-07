@@ -81,14 +81,18 @@ Evaluating 7 baseline models across temporal splits (Train: Jan–Aug, Val: Sep�
 ### Key ML Benchmark Findings:
 1. **Non-Linear Dynamics**: Tree ensembles ($R^2 \approx 0.77 - 0.78$) drastically outperform linear models ($R^2 < 0$) due to non-linear interactions between planetary boundary layer height ($1/\text{PBLH}$), wind speed ($1/u$), and synoptic inflow.
 2. **Pooled Multi-City Generalization**: Training across all 4 cities jointly with city identifiers yields strong cross-domain predictive performance ($R^2 = 0.778$, Test MAE $= 34.87\ \mu\text{g/m}^3$).
+3. **Multi-Year Training Impact (2018–2022 Train, 2024 Holdout)**:
+   When scaling to 5 full training years ($175\text{k}$ samples), tree models observe multiple recurring seasonal crisis cycles, elevating 2024 calendar-year out-of-sample holdout performance to **$R^2 = 0.911$** (XGBoost, MAE $= 17.11\ \mu\text{g/m}^3$). Even on Delhi's severe Nov–Dec 2024 winter holdout alone (mean $= 357.8\ \mu\text{g/m}^3$, p95 $= 861.6\ \mu\text{g/m}^3$), XGBoost achieves **$R^2 = 0.895$** (MAE $= 48.50\ \mu\text{g/m}^3$).
 
 ---
 
 ## 6. Structural Scope Boundaries & Known Limitations
 
-1. **Secondary Inorganic Aerosol Chemistry**: AtmosSim models primary physical dispersion and assimilates regional CAMS background; it does not explicitly simulate aqueous sulfate/nitrate oxidation chemistry occurring inside dense liquid water fog.
-2. **Monsoon Washout Floor in Global CAMS**: CAMS reanalysis maintains a $\sim 35-55\ \mu\text{g/m}^3$ background over India during monsoon rainouts, resulting in a known positive bias on pristine clean days ($30-40\ \mu\text{g/m}^3$ observed), tagged explicitly as `known_bias_direction: "positive"`.
-3. **Nocturnal Canopy Mixing Height**: Urban canopy roughness imposes a physical lower limit on nighttime mixing height, captured via $h_{\text{min}} = 50\text{m}$.
+1. **Observational Validation Window Boundary (2022–2024 vs. 2018–2021 Backcast)**:
+   Ground-truth observational validation against OpenAQ / CPCB ground monitoring stations was conducted strictly across $N=19$ historical dates spanning **2022, 2023, and 2024**. The **2018–2021 historical portion** was simulated using historical ERA5 meteorology and CAMS reanalysis, but **has not been independently spot-checked against real 2018–2021 monitoring stations**. The 2018–2021 portion must be treated as a physics-based backcast.
+2. **Secondary Inorganic Aerosol Chemistry**: AtmosSim models primary physical dispersion and assimilates regional CAMS background; it does not explicitly simulate aqueous sulfate/nitrate oxidation chemistry occurring inside dense liquid water fog.
+3. **Monsoon Washout Floor in Global CAMS**: CAMS reanalysis maintains a $\sim 35-55\ \mu\text{g/m}^3$ background over India during monsoon rainouts, resulting in a known positive bias on pristine clean days ($30-40\ \mu\text{g/m}^3$ observed), tagged explicitly as `known_bias_direction: "positive"`.
+4. **Nocturnal Canopy Mixing Height**: Urban canopy roughness imposes a physical lower limit on nighttime mixing height, captured via $h_{\text{min}} = 50\text{m}$.
 
 ---
 

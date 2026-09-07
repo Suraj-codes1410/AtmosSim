@@ -88,6 +88,15 @@ Four continuous 8,760-hour annual datasets were generated and verified:
 
 ---
 
-## 6. Conclusion
+## 6. Observational Validation Temporal Scope Boundary
+
+> [!IMPORTANT]
+> **Validation Window Boundary (2022–2024 vs. 2018–2021 Backcast)**:
+> Ground-truth observational validation against OpenAQ / CPCB reference monitoring stations was conducted strictly across $N=19$ historical dates spanning **2022, 2023, and 2024**.
+> The **2018–2021 historical portion** of the multi-year dataset was generated using the calibrated physics engine and historical ERA5/CAMS reanalysis, but **has not been independently spot-checked against real 2018–2021 ground monitoring stations**. Users must treat the 2018–2021 period as a physics-based model backcast rather than directly verified observational ground truth.
+
+---
+
+## 7. Conclusion
 
 With the integration of the synoptic CAMS background connector, length-scaled line dispersion, urban mixing height floor, and structured regime quality metadata, AtmosSim provides a validated, physically rigorous simulation framework across diverse climate and urban geometries.
