@@ -1,73 +1,92 @@
-# AtmosSim: Physics-to-ML Atmospheric Dispersion Benchmark
+# AtmosSim: Physics-Based Atmospheric Dispersion & Multi-City Benchmark
 
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/pytest-230%20passed-brightgreen.svg)]()
-[![Status](https://img.shields.io/badge/Phases%200--7-Verified%20%26%20Frozen-success.svg)]()
-[![Dataset](https://img.shields.io/badge/Dataset-v1.0%20Released-orange.svg)]()
+[![Tests](https://img.shields.io/badge/pytest-238%20passed-brightgreen.svg)]()
+[![Dataset](https://img.shields.io/badge/Dataset-2018--2024%20MultiCity%20(263MB)-orange.svg)]()
+[![Status](https://img.shields.io/badge/Physics--to--ML-Verified%20%26%20Documented-success.svg)]()
 
-AtmosSim is a research-grade, physics-based atmospheric dispersion simulator and reproducible machine-learning benchmark framework.
-
----
-
-## Overview
-
-AtmosSim bridges physical fluid dispersion modeling and machine learning:
-1. **Analytical & Lagrangian Physics Core**: Implements steady-state Gaussian Plume and time-dependent Gaussian Puff dispersion engines with Briggs dispersion parameters and Pasquill-Gifford stability.
-2. **Automated Input Assembly**: Connectors for real-world Open-Meteo weather reanalysis, digital elevation terrain, and OpenStreetMap road/industrial geometries.
-3. **Canonical Benchmark Dataset (v1.0)**: Factorial parameter sweep across stability, wind speed, wind direction, and emission rates, with strict zero-leakage temporal and cross-location splits.
-4. **Reproducible ML Baselines**: 7 machine-learning models (Persistence, Linear, Ridge, Random Forest, XGBoost, LightGBM, CatBoost) with comprehensive regression metrics and error diagnostics.
-5. **Observational Validation**: Ground-truth validation against real OpenAQ air-quality monitoring stations in Delhi NCR.
+AtmosSim is a physics-based atmospheric dispersion simulator and machine learning benchmark framework for urban air quality. It couples micro-to-mesoscale Gaussian line-source dispersion (CALINE4 formulation) across real-world OpenStreetMap road networks with synoptic regional background reanalysis from the Copernicus Atmosphere Monitoring Service (CAMS) and historical Open-Meteo ERA5 meteorology.
 
 ---
 
-## Project Structure
+## Observational Ground-Truth Validation & Regime Breakdown
 
-```text
-AtmosSim/
-├── artifacts/
-│   ├── benchmark_dataset/v1.0/        # Canonical benchmark Parquet splits & schema
-│   │   ├── train.parquet
-│   │   ├── validation.parquet
-│   │   ├── test.parquet
-│   │   ├── cross_location_test.parquet
-│   │   ├── metadata.json
-│   │   └── target_clipping_audit.json
-│   └── ml/                            # Phase 7 ML baseline configs & metrics
-│       ├── baseline_config.json
-│       └── baseline_metrics.json
-│
-├── docs/                              # Technical documentation & audit reports
-│   ├── project_verification_report.md # Master 8-gate reproducibility audit
-│   ├── phase4_validation_report.md    # OpenAQ observational ground-truth report
-│   ├── ml_baseline_benchmark.md       # Phase 7 ML benchmark metrics
-│   ├── phase7_scientific_audit.md     # Feature-to-target scientific audit
-│   ├── phase0_completion_report.md    # Phase 0 analytical plume report
-│   ├── phase1_completion_report.md    # Phase 1 Lagrangian puff engine report
-│   └── phase2_completion_report.md    # Phase 2 input assembly report
-│
-├── src/atmosim/
-│   ├── physics/                       # Gaussian plume, puff engine, stability, dispersion
-│   ├── data/                          # Open-Meteo, OpenAQ, Overpass, and terrain connectors
-│   ├── sources/                       # Road network & industrial emission parameterization
-│   ├── simulation/                    # End-to-end SimulationInputAssembler
-│   ├── dataset/                       # Phase 6 benchmark dataset generation & QA
-│   └── ml/                            # Phase 7 ML baselines, metrics, & evaluation
-│
-├── tests/                             # Full test suite (230 passed)
-│   ├── test_plume.py
-│   ├── test_puff.py
-│   ├── test_openaq.py
-│   ├── dataset/
-│   └── ml/
-│
-├── scripts/
-│   ├── generate_benchmark_dataset.py  # Dataset generator
-│   ├── validate_benchmark_dataset.py  # Dataset integrity validator
-│   └── run_ml_baselines.py            # Phase 7 ML training & evaluation
-│
-├── pyproject.toml
-└── README.md
-```
+AtmosSim was evaluated against real ground monitoring stations (OpenAQ / Central Pollution Control Board) in Delhi NCR across historical episodes (2022–2024). Model performance varies significantly by atmospheric regime, driven by the underlying physical mechanisms:
+
+### Per-Regime Performance Summary
+
+| Atmospheric Regime | Sample Size ($N$) | Observed PM2.5 Range | Pearson $r$ | Mean Abs Error (MAE) | Mean Rel Error (%) | Dominant Physical Mechanism & Assessment |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| **Stubble Burning Crisis** | $N=7$ | $286 - 665\ \mu\text{g/m}^3$ | **$+0.950$** | $44.5\ \mu\text{g/m}^3$ | $8.7\%$ | **Accurate Crisis Tracking**: Local line-source dispersion plus advected synoptic CAMS background successfully captures large transboundary smoke pulses across the Indo-Gangetic Plain. |
+| **Moderate Spring / Summer** | $N=4$ | $88 - 135\ \mu\text{g/m}^3$ | **$+0.988$** | $22.6\ \mu\text{g/m}^3$ | $21.3\%$ | **High Baseline Tracking**: Convective daytime boundary layer mixing ($>800\text{m}$) and moderate regional baselines track observed ground concentrations with low absolute bias. |
+| **Winter Fog & Inversion** | $N=5$ | $275 - 396\ \mu\text{g/m}^3$ | **$+0.179$** | $47.4\ \mu\text{g/m}^3$ | $12.8\%$ | **Known Chemistry Limitation**: Accurately models nocturnal radiation stagnation, but systematically underpredicts secondary aqueous sulfate formation inside dense fog droplets (e.g. 2024-01-14). Flagged as `known_bias_direction: "negative"`. |
+| **Monsoon Washout** | $N=3$ | $35 - 42\ \mu\text{g/m}^3$ | N/A (Narrow) | $18.5\ \mu\text{g/m}^3$ | $47.8\%$ | **Known Regional Floor Overprediction**: Global CAMS reanalysis maintains an elevated baseline floor ($\sim 35-55\ \mu\text{g/m}^3$) exceeding real intense wet rainout. Flagged as `known_bias_direction: "positive"`. |
+| **Combined Winter Crisis** | $N=12$ | $275 - 665\ \mu\text{g/m}^3$ | **$+0.788$** | $45.7\ \mu\text{g/m}^3$ | $10.4\%$ | Stubble and fog winter periods evaluated jointly ($\rho = +0.545$). |
+| **All Dates (Full Seasonal)** | $N=19$ | $35 - 665\ \mu\text{g/m}^3$ | **$+0.948$** | $34.0\ \mu\text{g/m}^3$ | $18.8\%$ | Full multi-seasonal dynamic range evaluation ($\rho = +0.884$). |
+
+---
+
+## Temporal Scope Boundary: 2022–2024 vs. 2018–2021 Backcast
+
+> [!IMPORTANT]
+> **Observational Ground-Truth vs. Model Backcast Boundary**:
+> - **2022–2024**: Evaluated directly against real OpenAQ / CPCB reference ground monitoring stations across 19 historical dates covering all 4 seasons.
+> - **2018–2021**: Generated by driving the calibrated physics engine with historical Open-Meteo ERA5 meteorology and CAMS reanalysis. **This portion has not been independently spot-checked against real 2018–2021 monitoring stations** and must be treated as a physics-based model backcast rather than verified observational ground truth.
+
+---
+
+## Multi-City Road Network Ingestion & Inventory Calibration
+
+AtmosSim models urban traffic emissions by slicing OpenStreetMap road networks into discrete line-source segments converted to equivalent volume sources with length-scaled initial dispersion ($\sigma_{x0} = \max(5.0\text{ m}, L / 2.15)$) and an urban mixing height floor ($h_{\text{min}} \ge 50\text{m}$). Emission factors are calibrated to published empirical inventories across four contrasting Indian urban airsheds:
+
+| City | Airshed / Geography | OSM Segments | Calibration ($\gamma$) | Cited Inventory Baseline |
+| :--- | :--- | :---: | :---: | :--- |
+| **Delhi** | Indo-Gangetic Plain (Trap Basin) | 418,063 | $37.84\text{x}$ | *IIT Kanpur / TERI (2018)*: Comprehensive Study on Air Pollution and Green House Gases in Delhi ($21.2\ \text{g/s}$ central vehicular exhaust baseline). |
+| **Mumbai** | Coastal Sea-Breeze Peninsula | 237,996 | $6.50\text{x}$ | *NEERI / SAFAR-Mumbai (2020)*: High-Resolution Air Quality and GHG Emission Inventory for MMR ($>85\%$ CNG penetration across taxi/bus fleet and daytime truck entry bans). |
+| **Pune** | Western Ghats Leeward Plateau | 319,643 | $22.10\text{x}$ | *SAFAR-Pune / ARAI (2020)*: Atmospheric Emission Inventory for Pune Metropolitan Region. |
+| **Bengaluru** | Deccan Elevated Plateau | 483,587 | $24.80\text{x}$ | *CSTEP / IISc (2020)*: Clean Air Action Plan for Bengaluru City. |
+
+---
+
+## Multi-Year Dataset Scale (2018–2024 Release)
+
+The full continuous multi-year dataset encompasses **28 continuous city-years** (**$263\text{ MB}$** on disk in `artifacts/multiyear_dataset/`):
+
+| Dataset Artifact | Format | Size | Rows | Columns | Total Data Cells | Description |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| `multicity_2018_2024_continuous_master.parquet` | Parquet | $7.02\text{ MB}$ | $245,472$ | 31 | $7,609,632$ | Columnar master file for ML training |
+| `multicity_2018_2024_continuous_master.csv` | CSV | $78.51\text{ MB}$ | $245,472$ | 31 | $7,609,632$ | Plaintext master dataset with full metadata |
+| `delhi_2018_2024_continuous.parquet` | Parquet | $2.28\text{ MB}$ | $61,368$ | 31 | $1,902,408$ | Continuous 7-year time series for Delhi |
+| `mumbai_2018_2024_continuous.parquet` | Parquet | $2.18\text{ MB}$ | $61,368$ | 31 | $1,902,408$ | Continuous 7-year time series for Mumbai |
+| `pune_2018_2024_continuous.parquet` | Parquet | $2.20\text{ MB}$ | $61,368$ | 31 | $1,902,408$ | Continuous 7-year time series for Pune |
+| `bengaluru_2018_2024_continuous.parquet` | Parquet | $2.18\text{ MB}$ | $61,368$ | 31 | $1,902,408$ | Continuous 7-year time series for Bengaluru |
+| `annual_slices/` (28 files) | CSV & Parquet | $\approx 85\text{ MB}$ | — | 31 | — | Individual yearly slices per city |
+
+### Dataset Schema (31 Columns)
+- **Identifiers**: `sample_id`, `timestamp` (UTC), `city`, `latitude`, `longitude`.
+- **Meteorology (ERA5)**: `wind_speed_mps`, `wind_direction_deg`, `wind_u_mps`, `wind_v_mps`, `temperature_c`, `relative_humidity_pct`, `surface_pressure_hpa`, `boundary_layer_height_m`, `direct_normal_irradiance_w_m2`, `cloud_cover_pct`, `stability_class`.
+- **Temporal Encodings**: `hour`, `day_of_week`, `month`, `is_weekend`, `sin_hour`, `cos_hour`, `sin_month`, `cos_month`.
+- **Physical Targets & Components**: `local_dispersion_pm25` (CALINE4 local road plume), `cams_regional_pm25` (CAMS synoptic background), `target_pm25` ($C_{\text{total}} = C_{\text{local}} + C_{\text{regional}}$).
+- **Quality Metadata Flags**: `regime`, `confidence_level` (`"high"`, `"medium"`, `"reduced"`), `known_bias_direction` (`"positive"`, `"negative"`, `"neutral"`), `systematic_bias_note`.
+
+---
+
+## Machine Learning Baseline Benchmark (2024 Out-of-Sample Holdout)
+
+Models were trained on 5 continuous calendar years (**2018–2022**, 175,296 rows across 4 cities), validated on **2023** (35,040 rows), and evaluated on a strict out-of-sample calendar year holdout (**2024**, 35,136 rows across all 4 cities):
+
+| Model | 2024 Test MAE ($\mu\text{g/m}^3$) | 2024 Test RMSE | 2024 Test $R^2$ | Delhi 2024 $R^2$ | Mumbai 2024 $R^2$ | Pune 2024 $R^2$ | Bengaluru 2024 $R^2$ |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Persistence (1-hr lag)** | $23.29$ | $54.09$ | $0.765$ | $0.778$ | $0.518$ | $0.589$ | $0.671$ |
+| **Ridge Regression** | $39.59$ | $71.21$ | $0.594$ | $0.519$ | $0.486$ | $0.454$ | $0.450$ |
+| **CatBoost Regressor** | $21.59$ | $39.01$ | $0.878$ | $0.866$ | $0.789$ | $0.851$ | $0.799$ |
+| **Random Forest** | $17.77$ | $38.00$ | $0.884$ | $0.870$ | $0.815$ | $0.872$ | $0.785$ |
+| **LightGBM Regressor** | $18.90$ | $33.79$ | $0.908$ | $0.902$ | $0.835$ | $0.890$ | $0.835$ |
+| **XGBoost Regressor** | **$17.11$** | **$33.28$** | **$0.911$** | **$0.903$** | **$0.834$** | **$0.892$** | **$0.864$** |
+
+### Benchmark Analysis:
+1. **Severe Winter Holdout Alone**: On Delhi's extreme Nov–Dec 2024 winter holdout alone (observed mean $= 357.78\ \mu\text{g/m}^3$, $p_{95} = 861.59\ \mu\text{g/m}^3$), XGBoost achieves **$R^2 = 0.895$** (MAE $= 48.50\ \mu\text{g/m}^3$).
+2. **Multi-Year Training Advantage**: Training across 5 complete seasonal cycles (175k rows) enables tree ensembles to learn recurring non-linear interactions ($1/\text{PBLH} \times 1/u \times C_{\text{regional}}$), outperforming single-year models ($R^2 \approx 0.78$).
 
 ---
 
@@ -83,38 +102,22 @@ pip install -e .
 ### Running the Test Suite
 ```bash
 pytest -q
-# Output: 230 passed
+# Output: 238 passed in ~20s
 ```
 
-### Generating the Benchmark Dataset
+### Generating Multi-Year Datasets
 ```bash
-python scripts/generate_benchmark_dataset.py
+python scripts/generate_multiyear_multicity_dataset.py --start-year 2018 --end-year 2024
 ```
 
-### Running Machine Learning Baselines
+### Running Multi-Year ML Benchmarks
 ```bash
-python scripts/run_ml_baselines.py
+python scripts/run_multiyear_ml_benchmark.py
 ```
 
 ---
 
-## Benchmark Results (v1.0 Dataset Release)
+## Technical Documentation & Reports
 
-| Model | Test MAE ($\mu\text{g/m}^3$) | Test RMSE ($\mu\text{g/m}^3$) | Test $R^2$ | Cross-Loc RMSE ($\mu\text{g/m}^3$) | Cross-Loc $R^2$ |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Persistence** | $124.51$ | $205.47$ | $-0.001$ | $221.76$ | $-0.000$ |
-| **Linear Regression** | $182.74$ | $215.41$ | $-0.100$ | $178.87$ | $0.349$ |
-| **Ridge Regression** | $140.21$ | $180.97$ | $0.224$ | $171.75$ | $0.400$ |
-| **Random Forest** | $51.23$ | $110.99$ | $0.708$ | $117.69$ | $0.718$ |
-| **XGBoost** | $53.12$ | $113.13$ | $0.697$ | $118.00$ | $0.717$ |
-| **LightGBM** | $54.84$ | $117.48$ | $0.673$ | $118.45$ | $0.715$ |
-| **CatBoost** | **$50.53$** | **$109.86$** | **$0.714$** | **$118.20$** | **$0.716$** |
-
----
-
-## Documentation & Verification
-
-For detailed scientific audits, sensitivity analyses, and observational validation:
-- [`docs/project_verification_report.md`](docs/project_verification_report.md): Master Phase 0–7 verification report and 8-gate reproducibility audit.
-- [`docs/phase4_validation_report.md`](docs/phase4_validation_report.md): OpenAQ observational validation against Delhi NCR ground monitors.
-- [`docs/ml_baseline_benchmark.md`](docs/ml_baseline_benchmark.md): Detailed Phase 7 benchmark breakdown and error distributions.
+- [`docs/phase4_validation_report.md`](docs/phase4_validation_report.md): Detailed 19-date observational validation records and regime breakdowns.
+- [`docs/project_verification_report.md`](docs/project_verification_report.md): End-to-end scientific audit across physics, data provenance, and ML benchmarks.
