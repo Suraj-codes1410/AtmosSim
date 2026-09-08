@@ -180,10 +180,10 @@ Delhi's most catastrophic pollution days (e.g. November 18, 2024, when ground st
 Because micro-to-mesoscale dispersion models simulate local road traffic emissions ($C_{\text{local}}$), attempting to predict total ambient PM2.5 without an external boundary condition leads to negative rank correlations on regional crisis days. AtmosSim explicitly decomposes ambient concentration:
 $$C_{\text{total}}(t) = C_{\text{local}}(t) + C_{\text{regional}}(t)$$
 
-Below, we filter to November 18, 2024 and plot this decomposition over that day's 24 hours alongside the real observed ground station level.
+Below, we filter the continuous master dataset to November 18, 2024 and plot this decomposition over that day's 24 hours alongside the real observed ground station level.
 
 > **Mechanism Note on the Nov 18 Peak Gap**:  
-> While the coupled model captures the extreme crisis scale ($560.2\ \mu\text{g/m}^3$ simulated vs. $665.0\ \mu\text{g/m}^3$ observed), the residual underprediction is driven by **CAMS spatial grid resolution ($\sim 40\text{ km}$ / $0.25^\circ \times 0.25^\circ$)**, which spatially averages dense, narrow transboundary agricultural smoke plumes. (In contrast, unmodeled secondary aqueous sulfate chemistry is the distinct limitation identified specifically for the *winter fog regime*, not this stubble crisis).""")
+> In the continuous master dataset, the simulated 24-hour mean is **$376.5\ \mu\text{g/m}^3$** (Regional $C_{\text{regional}} = 99.9\ \mu\text{g/m}^3$ + Local $C_{\text{local}} = 276.6\ \mu\text{g/m}^3$, with evening peaks reaching $722.1\ \mu\text{g/m}^3$) against the **$665.0\ \mu\text{g/m}^3$** ground station record. The residual 24-hour underprediction ($-43.4\%$) is driven by **CAMS synoptic grid resolution ($\sim 40\text{ km}$ / $0.25^\circ \times 0.25^\circ$)**, which spatially averages dense, narrow transboundary agricultural smoke corridors. (In contrast, unmodeled secondary aqueous sulfate chemistry is the distinct limitation identified specifically for the *winter fog regime*, not this stubble crisis).""")
 
 # Section 3 Code
 add_code("""# Filter to Delhi on Nov 18, 2024
