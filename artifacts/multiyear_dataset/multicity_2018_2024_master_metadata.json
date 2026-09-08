@@ -71,5 +71,6 @@
     "unbiased": 154584,
     "positive": 72576,
     "negative": 18312
-  }
+  },
+  "validation_vs_continuous_dataset_note": "The N=19 episodic validation table (e.g. 560.2 ug/m3 on 2024-11-18) uses point-in-time peak CAMS reanalysis snapshots to stress-test acute episode ranking fidelity against ground monitor spikes. The continuous hourly dataset (e.g. 376.5 ug/m3 24-hr mean on 2024-11-18, peaking at 722.2 ug/m3) is authoritative for ML training, multi-year time-series modeling, diurnal cycle analysis, and continuous annual statistics."
 }

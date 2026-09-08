@@ -24,6 +24,11 @@ AtmosSim was evaluated against real ground monitoring stations (OpenAQ / Central
 | **Combined Winter Crisis** | $N=12$ | $275 - 665\ \mu\text{g/m}^3$ | **$+0.788$** | $45.7\ \mu\text{g/m}^3$ | $10.4\%$ | Stubble and fog winter periods evaluated jointly ($\rho = +0.545$). |
 | **All Dates (Full Seasonal)** | $N=19$ | $35 - 665\ \mu\text{g/m}^3$ | **$+0.948$** | $34.0\ \mu\text{g/m}^3$ | $18.8\%$ | Full multi-seasonal dynamic range evaluation ($\rho = +0.884$). |
 
+> [!NOTE]
+> **Authoritative Scope: Episodic Validation Snapshot vs. Continuous Hourly Dataset**:
+> - **Episodic Validation Table ($560.2\ \mu\text{g/m}^3$ on 2024-11-18)**: Evaluates a point-in-time peak snapshot under acute crisis conditions ($412.0\ \mu\text{g/m}^3$ regional CAMS peak $+ 148.2\ \mu\text{g/m}^3$ local dispersion). **Authoritative for**: Historical episodic model validation, point-in-time physical stress testing, and ranking fidelity against acute ground monitoring station spikes ($665.0\ \mu\text{g/m}^3$).
+> - **Continuous Hourly Dataset ($376.5\ \mu\text{g/m}^3$ 24-hr mean on 2024-11-18)**: Represents the full 24-hour daily mean from continuous hourly simulations ($99.9\ \mu\text{g/m}^3$ 24-h CAMS regional mean $+ 276.6\ \mu\text{g/m}^3$ 24-h local CALINE4 road dispersion, with 1-hour evening peak reaching $722.2\ \mu\text{g/m}^3$). **Authoritative for**: Machine learning benchmarks, continuous multi-year time-series modeling, diurnal cycle analysis, and annual air quality statistics.
+
 ---
 
 ## Temporal Scope Boundary: 2022–2024 vs. 2018–2021 Backcast

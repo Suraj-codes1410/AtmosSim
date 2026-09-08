@@ -64,6 +64,11 @@ Rather than relying on a single aggregate correlation figure ($r = +0.948$ acros
 | **2023-08-20** | Monsoon Washout | 3.80 | 820 | 42.0 | 51.5 | 6.2 | 57.7 | +15.7 | +37.4% |
 | **2024-09-20** | Monsoon Washout | 3.20 | 780 | 40.0 | 54.2 | 7.9 | 62.1 | +22.1 | +55.3% |
 
+> [!NOTE]
+> **Authoritative Scope: Episodic Validation Snapshot vs. Continuous Hourly Dataset**:
+> - **Episodic Validation Table ($560.2\ \mu\text{g/m}^3$ on 2024-11-18)**: Evaluates a point-in-time peak snapshot under acute crisis conditions ($412.0\ \mu\text{g/m}^3$ regional CAMS peak $+ 148.2\ \mu\text{g/m}^3$ local dispersion). **Authoritative for**: Historical episodic model validation, point-in-time physical stress testing, and ranking fidelity against acute ground monitoring station spikes ($665.0\ \mu\text{g/m}^3$).
+> - **Continuous Hourly Dataset ($376.5\ \mu\text{g/m}^3$ 24-hr mean on 2024-11-18)**: Represents the full 24-hour daily mean from continuous hourly simulations ($99.9\ \mu\text{g/m}^3$ 24-h CAMS regional mean $+ 276.6\ \mu\text{g/m}^3$ 24-h local CALINE4 road dispersion, with 1-hour evening peak reaching $722.2\ \mu\text{g/m}^3$). **Authoritative for**: Machine learning benchmarks, continuous multi-year time-series modeling, diurnal cycle analysis, and annual air quality statistics.
+
 ---
 
 ## 4. Key Engineering Fixes & Physics Breakthroughs
