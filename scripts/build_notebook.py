@@ -153,27 +153,32 @@ for name, mask in regimes:
     
     results_dict[name] = {"r": r, "mae": mae, "mape": mape}
     r_str = f"{r:+.3f}" if not np.isnan(r) else "N/A"
+    if name == "Monsoon Washout":
+        r_str = f"{r_str}*"
     print(f"{name:<26} | {n:3d} | {obs_range:>15} | {r_str:>10} | {mae:12.1f} | {mape:8.1f}%")
 
 print("=========================================================================================")
+print("* Note on Monsoon: Pearson r = +0.715 is computed across a very narrow 7 ug/m3 range (N=3)")
+print("  and is statistically fragile; CAMS regional background floor maintains ~50 ug/m3 bias.")
 print()
 
 # Assertions matching documented validation report
 assert np.isclose(results_dict["Stubble Burning Crisis"]["r"], 0.950, atol=0.01), "Stubble r mismatch"
 assert np.isclose(results_dict["Moderate Spring / Summer"]["r"], 0.988, atol=0.01), "Moderate r mismatch"
 assert np.isclose(results_dict["Winter Fog & Inversion"]["r"], 0.179, atol=0.01), "Fog r mismatch"
+assert np.isclose(results_dict["Monsoon Washout"]["r"], 0.715, atol=0.01), "Monsoon r mismatch"
 assert np.isclose(results_dict["All 19 Validation Dates"]["r"], 0.948, atol=0.01), "All dates r mismatch"
 print("LIVE VERIFICATION PASSED: Recomputed Pearson correlations match documented report exactly.")""")
 
 # Section 3 Markdown
-add_md("""---
+add_md(r"""---
 
 ## 3. Local vs. Regional Decomposition (November 18, 2024 Event)
 
 Delhi's most catastrophic pollution days (e.g. November 18, 2024, when ground stations recorded $665\ \mu\text{g/m}^3$) are dominated by regional transboundary agricultural stubble smoke advected from Punjab and Haryana across hundreds of kilometers.
 
-Because micro-to-mesoscale dispersion models simulate local road traffic emissions ($C_{\\text{local}}$), attempting to predict total ambient PM2.5 without an external boundary condition leads to negative rank correlations on regional crisis days. AtmosSim explicitly decomposes ambient concentration:
-$$C_{\\text{total}}(t) = C_{\\text{local}}(t) + C_{\\text{regional}}(t)$$
+Because micro-to-mesoscale dispersion models simulate local road traffic emissions ($C_{\text{local}}$), attempting to predict total ambient PM2.5 without an external boundary condition leads to negative rank correlations on regional crisis days. AtmosSim explicitly decomposes ambient concentration:
+$$C_{\text{total}}(t) = C_{\text{local}}(t) + C_{\text{regional}}(t)$$
 
 Below, we filter to November 18, 2024 and plot this decomposition over that day's 24 hours alongside the real observed ground station level.""")
 
