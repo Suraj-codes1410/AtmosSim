@@ -1,0 +1,20 @@
+date,regime,regime_display,wind_speed_mps,pblh_m,observed_pm25,cams_regional_pm25,local_dispersion_pm25,simulated_total_pm25,error_pm25,relative_error_pct
+2022-11-04,stubble_burning,Stubble Crisis,1.29,240,313.0,258.4,129.5,387.9,74.9,23.9
+2022-11-08,stubble_burning,Stubble Crisis,1.45,280,345.0,284.1,108.2,392.3,47.3,13.7
+2023-11-03,stubble_burning,Stubble Crisis,2.27,320,319.0,248.6,73.6,322.2,3.2,1.0
+2023-11-13,stubble_burning,Diwali Smog,1.77,310,286.0,215.3,94.4,309.7,23.7,8.3
+2024-11-18,stubble_burning,Extreme Stubble,1.51,180,665.0,412.0,148.2,560.2,-104.8,-15.8
+2023-11-20,stubble_burning,Stubble Post,1.82,290,390.0,295.0,88.3,383.3,-6.7,-1.7
+2024-11-15,stubble_burning,Stubble Crisis,1.35,210,480.0,360.5,122.1,482.6,2.6,0.5
+2023-01-10,winter_fog_inversion,Winter Fog,1.62,220,380.0,260.0,105.4,365.4,-14.6,-3.8
+2023-01-20,winter_fog_inversion,Winter Fog,2.1,310,275.0,180.2,79.5,259.7,-15.3,-5.6
+2024-01-14,winter_fog_inversion,Winter Fog,1.89,520,396.0,165.2,49.9,215.1,-180.9,-45.7
+2024-01-22,winter_fog_inversion,Winter Fog,1.48,260,350.0,245.0,110.8,355.8,5.8,1.7
+2024-01-28,winter_fog_inversion,Winter Fog,2.05,340,290.0,195.4,74.2,269.6,-20.4,-7.0
+2023-03-15,moderate_transition,Moderate Spring,3.42,850,115.0,65.0,22.4,87.4,-27.6,-24.0
+2023-04-10,moderate_transition,Moderate Spring,4.1,1100,95.0,58.2,16.5,74.7,-20.3,-21.4
+2024-03-01,moderate_transition,Moderate Spring,2.85,720,135.0,82.0,31.8,113.8,-21.2,-15.7
+2024-04-20,moderate_transition,Moderate Spring,3.9,1250,88.0,52.4,14.2,66.6,-21.4,-24.3
+2023-07-15,south_asian_monsoon,Monsoon Rain,4.5,950,35.0,48.0,4.8,52.8,17.8,50.9
+2023-08-20,south_asian_monsoon,Monsoon Rain,3.8,820,42.0,51.5,6.2,57.7,15.7,37.4
+2024-09-20,south_asian_monsoon,Monsoon Rain,3.2,780,40.0,54.2,7.9,62.1,22.1,55.3
