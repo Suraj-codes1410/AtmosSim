@@ -53,11 +53,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-# Locate master parquet dataset
+# Locate master parquet dataset (supports local repo and Kaggle environments)
 dataset_candidates = [
     Path("artifacts/multiyear_dataset/multicity_2018_2024_continuous_master.parquet"),
     Path("../artifacts/multiyear_dataset/multicity_2018_2024_continuous_master.parquet"),
     Path("multicity_2018_2024_continuous_master.parquet"),
+    *list(Path("/kaggle/input").rglob("multicity_2018_2024_continuous_master.parquet")),
+    *list(Path("/kaggle/input").rglob("*.parquet")),
 ]
 
 dataset_path = next((p for p in dataset_candidates if p.exists()), None)
@@ -94,6 +96,7 @@ val_csv_candidates = [
     Path("artifacts/validation_dates.csv"),
     Path("../artifacts/validation_dates.csv"),
     Path("validation_dates.csv"),
+    *list(Path("/kaggle/input").rglob("validation_dates.csv")),
 ]
 val_path = next((p for p in val_csv_candidates if p.exists()), None)
 
